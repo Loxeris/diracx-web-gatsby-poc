@@ -7,8 +7,13 @@ import {
 } from "diracx-web-components/contexts";
 import { navigate } from "gatsby";
 import { useLocation } from "@reach/router";
-import Layout from "../lvk-dirac/components/layout";
-import Dashboard from "../lvk-dirac/components/dashboard";
+import { LoginForm } from "diracx-web-components/components";
+
+const pageStyles = {
+  color: "#232129",
+  padding: 96,
+  fontFamily: "-apple-system, Roboto, sans-serif, serif",
+};
 
 const IndexPage: React.FC<PageProps> = () => {
   const location = useLocation();
@@ -16,27 +21,21 @@ const IndexPage: React.FC<PageProps> = () => {
     const searchParams = new URLSearchParams(location.search);
     return searchParams;
   };
-  const setPath = React.useCallback(
-    (path: string) => {
-      if (path === location.pathname + location.search) {
-        return;
-      }
-      navigate(path);
-    },
-    [location.pathname, location.search]
-  );
   return (
     <main>
       <OIDCConfigurationProvider>
         <ThemeProvider>
           <NavigationProvider
             getPath={() => location.pathname}
-            setPath={setPath}
+            setPath={(path) => {
+              if (path === location.pathname + location.search) {
+                return;
+              }
+              navigate(path);
+            }}
             getSearchParams={getSearchParams}
           >
-            <Layout>
-              <Dashboard />
-            </Layout>
+            <LoginForm logoURL="https://raw.githubusercontent.com/DIRACGrid/management/master/branding/diracx/svg/diracx-logo-square-minimal.svg" />
           </NavigationProvider>
         </ThemeProvider>
       </OIDCConfigurationProvider>
